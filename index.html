@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>music share</title>
+  
+  <style>
+    body {
+      font-family: Comic Sans MS; <!-- comic sans ftw lol -->
+    }
+    
+    #tracks {
+      padding: 0;
+    }
+    
+    figure {
+      margin: 0;
+      border-top: 1px solid #ccc;
+    }
+    
+    li {
+      padding: 20px 0px 20px 0px;
+    }
+    
+    figure > p {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <h1> music share </h1>
+  <p> sharing some of my arrangements here :). if there are any issues, please contact me via issue on my GitHub repo page. thank you! </p>
+  <!-- <label for="searchBox">search:</label> -->
+  <input id="searchBox" type="text" />
+  <button id="searchBtn"> search </button>
+  
+  <div id="content">
+    <ul id="tracks">
+      <!-- music tracks go here -->      
+    </ul>
+  </div>
+</body>
+
+<script>
+function debounce(){
+}
+
+function search(string){
+  // clear the list first
+  const list = document.getElementById('tracks');
+  while(list.children.length > 0){
+    list.removeChild(list.firstChild);
+  }
+  console.log('cleared list!');
+  const container = document.getElementById('tracks');
+  tracks.forEach(track => {
+    if(track.trackname.toLowerCase().includes(string) || track.tags.map(t => t.toLowerCase()).includes(string) || track.info.toLowerCase().includes(string)){
+      const newTrack = makeTrackElement(track);
+      container.appendChild(newTrack);
+    }
+  });
+}
+
+// create li element containing track info + audio
+function makeTrackElement(trackInfo){
+  /*
+  <li>
+    <figure>
+      <img src="https://drive.google.com/thumbnail?id=1nTbdEfsQrOBHvY4z6_OMabZ0z9rX5xG1" />
+      <figcaption> ninkoro dance orchestral arrangement </figcaption>
+      <audio controls src="music/062525ninkoroEDarr.ogg"></audio>
+      <p class="tags">tags</p>
+    </figure>
+  </li>
+  */
+  const li = document.createElement('li');
+  const img = document.createElement('img');
+  img.src = trackInfo.image;
+  
+  const audio = document.createElement('audio');
+  audio.controls = true;
+  audio.src = `music/${trackInfo.filename}.mp3`;
+  
+  const figure = document.createElement('figure');
+  const figCaption = document.createElement('figcaption');
+  figCaption.textContent = trackInfo.trackname;
+  
+  const info = document.createElement('p');
+  info.textContent = trackInfo.info;
+  
+  const tags = document.createElement('p');
+  if(trackInfo.tags && trackInfo.tags.length > 0){
+    tags.textContent = `tags: ${trackInfo.tags.join(',')}`;
+  }
+  
+  figure.appendChild(img);
+  figure.appendChild(figCaption);
+  figure.appendChild(audio);
+  figure.appendChild(info);
+  figure.appendChild(tags);
+  li.appendChild(figure);
+  
+  return li;
+}
+
+document.getElementById('searchBtn').addEventListener('click', () => {
+  const searchStr = document.getElementById('searchBox').value;
+  search(searchStr.toLowerCase());
+});
+
+let tracks = [];
+
+async function getAndListTracks(){
+  // try using this https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+  // see if url has a track specified and if so, just look for that one
+  // also helpful: https://stackoverflow.com/questions/9870512/how-to-obtain-the-query-string-from-the-current-url-with-javascript
+
+  // fetch json containing track info for each track
+  const trackDataJson = await fetch('metadata.json');
+  const trackData = await trackDataJson.json();
+  
+  const container = document.getElementById('tracks');
+  
+  // can query a specific track via 'search' parameter
+  const urlParams = new URL(document.location.toString()).searchParams;
+  const queryParamValue = urlParams.get('search');
+  
+  trackData.forEach(track => {
+    if(track.filename){
+      if(!queryParamValue){
+        const newTrack = makeTrackElement(track);
+        container.appendChild(newTrack);
+      }else{
+        if(track.trackname.includes(queryParamValue) || track.tags.includes(queryParamValue)){
+          const newTrack = makeTrackElement(track);
+          container.appendChild(newTrack);
+        }
+      }
+      tracks.push(track);
+    }
+  });
+}
+
+getAndListTracks();
+
+</script>
+
+</html>
