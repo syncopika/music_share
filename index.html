@@ -46,6 +46,7 @@
 
 <script>
 function debounce(){
+  // TODO? - would need to get rid of search button though if we implement this
 }
 
 function search(string){
@@ -62,6 +63,20 @@ function search(string){
       container.appendChild(newTrack);
     }
   });
+}
+
+function turnOtherTracksOff(thisTrackName){
+  return () => {
+    // get all audio elements
+    const audioElements = document.querySelectorAll('audio');
+    
+    // pause all audio elements that aren't this track
+    audioElements.forEach(el => {
+      if(el.id !== thisTrackName){
+        el.pause();
+      }
+    });
+  }
 }
 
 // create li element containing track info + audio
@@ -83,6 +98,10 @@ function makeTrackElement(trackInfo){
   const audio = document.createElement('audio');
   audio.controls = true;
   audio.src = `music/${trackInfo.filename}.mp3`;
+  audio.id = trackInfo.filename;
+  
+  // when we play a track, we'll pause any other track that's currently playing
+  audio.addEventListener('play', turnOtherTracksOff(trackInfo.filename));
   
   const figure = document.createElement('figure');
   const figCaption = document.createElement('figcaption');
