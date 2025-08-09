@@ -58,7 +58,10 @@ function search(string){
   console.log('cleared list!');
   const container = document.getElementById('tracks');
   tracks.forEach(track => {
-    if(track.trackname.toLowerCase().includes(string) || track.tags.map(t => t.toLowerCase()).includes(string) || track.info.toLowerCase().includes(string)){
+    if(track.trackname.toLowerCase().includes(string) || 
+      track.tags.map(t => t.toLowerCase()).includes(string) || 
+      track.info.toLowerCase().includes(string)
+    ){
       const newTrack = makeTrackElement(track);
       container.appendChild(newTrack);
     }
@@ -106,6 +109,7 @@ function makeTrackElement(trackInfo){
   const figure = document.createElement('figure');
   const figCaption = document.createElement('figcaption');
   figCaption.textContent = trackInfo.trackname;
+  figCaption.style.fontWeight = 'bold';
   
   const info = document.createElement('p');
   info.textContent = trackInfo.info;
