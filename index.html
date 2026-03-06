@@ -149,7 +149,8 @@ async function getAndListTracks(){
   
   // can query a specific track via 'search' parameter
   const urlParams = new URL(document.location.toString()).searchParams;
-  const queryParamValue = urlParams.get('search');
+  const queryParamValue = urlParams.get('search').toLowerCase();
+  console.log(`searching for ${queryParamValue}`);
   
   trackData.forEach(track => {
     if(track.filename){
@@ -157,7 +158,7 @@ async function getAndListTracks(){
         const newTrack = makeTrackElement(track);
         container.appendChild(newTrack);
       }else{
-        if(track.trackname.includes(queryParamValue) || track.tags.includes(queryParamValue)){
+        if(track.trackname.toLowerCase().includes(queryParamValue) || track.tags.includes(queryParamValue)){
           const newTrack = makeTrackElement(track);
           container.appendChild(newTrack);
         }
