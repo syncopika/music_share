@@ -149,7 +149,7 @@ async function getAndListTracks(){
   
   // can query a specific track via 'search' parameter
   const urlParams = new URL(document.location.toString()).searchParams;
-  const queryParamValue = urlParams.get('search').toLowerCase();
+  const queryParamValue = urlParams.get('search')?.toLowerCase();
   console.log(`searching for ${queryParamValue}`);
   
   trackData.forEach(track => {
