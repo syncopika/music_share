@@ -142,15 +142,22 @@
 {
   "filename": "030126-めにしゅき♡ラッシュっしゅ!-arr",
   "trackname": "「めにしゅき♡ラッシュっしゅ!」 (ウマ娘 プリティーダービー) piano arrangement",
-  "tags": [],
+  "tags": ["umamusume"],
   "info": "composer: 市橋 卓也",
   "image": ""
 },
 {
   "filename": "091023-nichijouED-zzz-arr-edit",
   "trackname": "「Zzz」 (日常 ED) woodwind quintet arrangement",
-  "tags": [],
+  "tags": ["nichijou"],
   "info": "composer: 前山田 健一",
+  "image": ""
+},
+{
+  "filename": "050326yuyushikiOParr",
+  "trackname": "「せーのっ!」 (ゆゆ式 OP) orchestral arrangement",
+  "tags": ["yuyushiki"],
+  "info": "composer: ふわりP",
   "image": ""
 }
 ]
